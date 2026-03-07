@@ -96,7 +96,6 @@ export default function App() {
     slope: 1,
     ca: 1,
     thal: 3,
-    modelType: "logistic_regression",
   });
 
   const [loading, setLoading] = useState(false);
@@ -499,31 +498,6 @@ export default function App() {
                                   formData.sex === opt.value 
                                     ? "bg-indigo-600 text-white border-indigo-600 shadow-lg shadow-indigo-100" 
                                     : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300"
-                                )}
-                              >
-                                {opt.label}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div className="md:col-span-2 space-y-3">
-                          <label className="text-sm font-bold text-slate-700 uppercase tracking-wider">Prediction Model</label>
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            {[
-                              { label: "Logistic Regression", value: "logistic_regression" },
-                              { label: "Random Forest", value: "random_forest" },
-                              { label: "Decision Tree", value: "decision_tree" }
-                            ].map(opt => (
-                              <button
-                                key={opt.value}
-                                type="button"
-                                onClick={() => handleValueChange("modelType", opt.value)}
-                                className={cn(
-                                  "py-4 rounded-2xl border transition-all font-bold text-sm",
-                                  formData.modelType === opt.value 
-                                    ? "bg-rose-600 text-white border-rose-600 shadow-lg shadow-rose-100" 
-                                    : "bg-white text-slate-600 border-slate-200 hover:border-rose-300"
                                 )}
                               >
                                 {opt.label}
