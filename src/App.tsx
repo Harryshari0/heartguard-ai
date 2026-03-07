@@ -476,9 +476,9 @@ export default function App() {
                               name="age"
                               value={formData.age}
                               onChange={handleInputChange}
-                              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-rose-500 outline-none transition-all font-bold text-lg"
+                              className="w-full p-4 pr-24 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-rose-500 outline-none transition-all font-bold text-lg"
                             />
-                            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium">Years</span>
+                            <span className="absolute right-10 top-1/2 -translate-y-1/2 text-slate-400 font-medium pointer-events-none">Years</span>
                           </div>
                         </div>
 
@@ -838,15 +838,42 @@ export default function App() {
 
             </div>
 
-            <div className="p-8 bg-slate-900 rounded-[2rem] text-white space-y-4">
-              <h4 className="font-black uppercase tracking-widest text-xs text-slate-500">Emergency Contact</h4>
-              <p className="text-lg font-bold leading-tight">If you are experiencing chest pain or shortness of breath, call emergency services immediately.</p>
-              <div className="flex items-center gap-2 text-rose-500 font-black text-2xl">
-                <Activity className="w-6 h-6" /> 911 / 112
+          </div>
+        </div>
+
+        {/* Horizontal Emergency Banner */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-12 p-8 bg-slate-900 rounded-[2.5rem] text-white flex flex-col md:flex-row items-center justify-between gap-8 border border-white/5 shadow-2xl overflow-hidden relative group"
+        >
+          <div className="absolute top-0 right-0 w-64 h-64 bg-rose-600/10 blur-[100px] -mr-32 -mt-32 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-600/10 blur-[100px] -ml-32 -mb-32 pointer-events-none" />
+          
+          <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
+            <div className="w-20 h-20 bg-rose-600/20 rounded-3xl flex items-center justify-center shrink-0 border border-rose-500/30 shadow-inner group-hover:scale-110 transition-transform duration-500">
+              <Activity className="text-rose-500 w-10 h-10" />
+            </div>
+            <div className="space-y-2 text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start gap-2">
+                <span className="w-2 h-2 bg-rose-500 rounded-full animate-pulse" />
+                <h4 className="font-black uppercase tracking-widest text-xs text-slate-500">Emergency Response</h4>
+              </div>
+              <p className="text-xl md:text-2xl font-black leading-tight max-w-2xl tracking-tight">
+                If you are experiencing chest pain or shortness of breath, call emergency services <span className="text-rose-500">immediately</span>.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center md:items-end gap-3 relative z-10">
+            <span className="text-slate-500 font-black uppercase tracking-[0.3em] text-[10px]">Available 24/7</span>
+            <div className="flex items-center gap-6 bg-white/5 px-10 py-6 rounded-[2rem] border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors">
+              <div className="text-rose-500 font-black text-4xl md:text-5xl tracking-tighter flex items-center gap-4">
+                911 <span className="text-slate-700 text-2xl font-light">/</span> 112
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </main>
 
       {/* Error Toast */}
