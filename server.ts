@@ -68,7 +68,7 @@ app.post("/api/predict", async (req, res) => {
     const patientData = req.body;
 
     // Call Python ML script
-    const pythonProcess = spawn("python3", ["model.py"]);
+    const pythonProcess = spawn("python", ["model.py"]);
     let resultData = "";
     let errorData = "";
 
@@ -119,7 +119,7 @@ async function setupServer() {
     app.use(express.static("dist"));
   }
 
-  const PORT = process.env.PORT || 3000;
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
