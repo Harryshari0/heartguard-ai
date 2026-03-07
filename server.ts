@@ -7,7 +7,7 @@ import Database from "better-sqlite3";
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Initialize Database
 const db = new Database("heart_guard.db");
