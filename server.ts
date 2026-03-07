@@ -25,7 +25,16 @@ db.exec(`
 
 app.use(express.json());
 
-// API Routes
+/* ---------------- HEALTH CHECK ROUTE ---------------- */
+app.get("/api/health", (req, res) => {
+  res.json({
+    status: "ok",
+    service: "HeartGuard AI",
+    timestamp: new Date().toISOString()
+  });
+});
+
+/* ---------------- HISTORY API ---------------- */
 app.get("/api/history", (req, res) => {
   try {
     const rows = db.prepare("SELECT * FROM history ORDER BY timestamp DESC").all();
@@ -47,6 +56,7 @@ app.post("/api/history", (req, res) => {
       INSERT INTO history (id, riskLevel, probability, insight, modelUsed, timestamp, data)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `);
+
     stmt.run(
       item.id,
       item.riskLevel,
@@ -56,19 +66,22 @@ app.post("/api/history", (req, res) => {
       item.timestamp,
       JSON.stringify(item.data)
     );
+
     res.json({ success: true });
+
   } catch (error) {
     console.error("Failed to save history:", error);
     res.status(500).json({ error: "Failed to save history" });
   }
 });
 
+/* ---------------- PREDICTION API ---------------- */
 app.post("/api/predict", async (req, res) => {
   try {
     const patientData = req.body;
 
-    // Call Python ML script
     const pythonProcess = spawn("python", ["model.py"]);
+
     let resultData = "";
     let errorData = "";
 
@@ -84,6 +97,7 @@ app.post("/api/predict", async (req, res) => {
     });
 
     pythonProcess.on("close", (code) => {
+
       if (code !== 0) {
         console.error("Python error:", errorData);
         return res.status(500).json({ error: "Failed to process prediction in Python" });
@@ -91,14 +105,18 @@ app.post("/api/predict", async (req, res) => {
 
       try {
         const prediction = JSON.parse(resultData);
+
         if (prediction.error) {
           return res.status(500).json({ error: prediction.error });
         }
+
         res.json(prediction);
+
       } catch (e) {
         console.error("JSON parse error from Python:", e);
         res.status(500).json({ error: "Invalid response from Python model" });
       }
+
     });
 
   } catch (error) {
@@ -107,23 +125,28 @@ app.post("/api/predict", async (req, res) => {
   }
 });
 
-// Serve static files / Vite middleware
+/* ---------------- SERVER SETUP ---------------- */
 async function setupServer() {
+
   if (process.env.NODE_ENV !== "production") {
+
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
     });
+
     app.use(vite.middlewares);
+
   } else {
+
     app.use(express.static("dist"));
+
   }
 
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
 }
 
 setupServer();
