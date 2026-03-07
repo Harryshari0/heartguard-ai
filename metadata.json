@@ -1,0 +1,5 @@
+{
+  "name": "HeartGuard AI",
+  "description": "A full-stack machine learning application for predicting heart disease risk based on clinical attributes.",
+  "requestFramePermissions": []
+}
