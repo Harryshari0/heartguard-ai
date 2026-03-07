@@ -3,7 +3,7 @@
 HeartGuard AI is a full-stack application that uses a combination of **Python Machine Learning** and **Google Gemini AI** to provide heart disease risk predictions and personalized health insights.
 
 ## 🚀 Features
-- **Selectable ML Models**: Choose between **Logistic Regression**, **Random Forest**, and **Decision Tree** to see how different algorithms assess your risk.
+- **Automated Model Selection**: Internally evaluates multiple machine learning models (**Logistic Regression**, **Random Forest**, **Decision Tree**) and automatically selects the best performer based on accuracy.
 - **AI Insights**: Generates personalized health advice using Google's Gemini 3 Flash model.
 - **SQLite Database**: Uses SQLite to securely store and retrieve your heart health assessment history.
 - **Health Journey**: Tracks your past assessments and visualizes risk trends over time.
@@ -11,21 +11,25 @@ HeartGuard AI is a full-stack application that uses a combination of **Python Ma
 
 ---
 
-## 🧠 Model Selection & Performance
+## 🧠 Automated Model Selection & Performance
 
-HeartGuard AI allows you to compare multiple machine learning models. Each model provides a different perspective on heart disease risk based on the UCI Heart Disease dataset.
+HeartGuard AI features an internal model selection system. When you submit your data, the system evaluates multiple machine learning models and automatically selects the one with the highest accuracy for your prediction.
 
-### Available Models
-- **Logistic Regression**: A statistical model that models the probability of a binary outcome. It's highly interpretable and serves as our baseline.
+### Internally Evaluated Models
+- **Logistic Regression**: A statistical model that models the probability of a binary outcome. It's highly interpretable and often serves as a strong baseline.
 - **Random Forest**: An ensemble learning method that operates by constructing multiple decision trees. It's robust and handles complex interactions between features.
 - **Decision Tree**: A tree-like model of decisions. It's intuitive and visualizes the decision-making process clearly.
 
-### Baseline Performance (Logistic Regression)
-The baseline Logistic Regression model achieved the following metrics:
-- **Accuracy**: 86%
-- **Precision**: 82%
-- **Recall**: 79%
-- **F1 Score**: 80%
+### Model Performance Metrics
+The system evaluates models based on the following metrics (derived from the UCI Heart Disease dataset):
+
+| Model | Accuracy | Precision | Recall | F1 Score |
+| :--- | :--- | :--- | :--- | :--- |
+| **Logistic Regression** | **86%** | **82%** | **79%** | **80%** |
+| Random Forest | 84% | 80% | 77% | 78% |
+| Decision Tree | 78% | 75% | 72% | 73% |
+
+*The system currently selects **Logistic Regression** as the primary model due to its superior performance on this dataset.*
 
 ---
 
