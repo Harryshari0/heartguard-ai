@@ -33,6 +33,36 @@ The system evaluates models based on the following metrics (derived from the UCI
 
 ---
 
+## 🏗️ Engineering & Architecture
+
+### System Architecture
+HeartGuard AI follows a modern **3-tier architecture** designed for scalability and separation of concerns:
+1.  **Frontend (Presentation Layer)**: A responsive React SPA built with **Vite**, **Tailwind CSS**, and **Framer Motion**. It handles user input, data visualization (using **Recharts**), and state management.
+2.  **Backend (Application Layer)**: A **Node.js/Express** server that acts as the orchestrator. It manages the **SQLite** database, handles API requests, and executes the Python ML engine via child processes.
+3.  **ML Engine (Data Science Layer)**: A standalone **Python** environment that encapsulates the machine learning logic. This allows for easy updates to the models without affecting the core application logic.
+
+### 🧪 ML Pipeline
+The prediction pipeline is designed to be "model-agnostic" at the interface level:
+-   **Data Ingestion**: Patient data is sent from the React frontend as a JSON payload.
+-   **Internal Evaluation**: The Python engine (`model.py`) loads pre-defined weights and logic for multiple models (Logistic Regression, Random Forest, Decision Tree).
+-   **Metric-Driven Selection**: Each model is evaluated against stored performance metrics (Accuracy, Precision, Recall, F1).
+-   **Inference**: The model with the highest accuracy is selected to perform the inference on the live patient data.
+-   **Post-Processing**: The raw probability is mapped to a qualitative risk level (Low, Medium, High).
+
+### 🔌 API Design
+The backend provides a clean RESTful API for all operations:
+-   `POST /api/predict`: Accepts patient data, executes the ML pipeline, and returns the risk assessment.
+-   `GET /api/history`: Retrieves the chronological history of assessments from the SQLite database.
+-   `POST /api/history`: Persists a new assessment record, including the specific ML model used and the AI-generated insight.
+
+### 🚀 Future Improvements
+-   **Wearable Integration**: Connect with Apple Health or Google Fit to pull real-time heart rate and activity data.
+-   **Advanced Models**: Implement Gradient Boosting (XGBoost/LightGBM) and Neural Networks for higher predictive power.
+-   **User Authentication**: Secure user accounts to allow patients to track their health journey over long periods.
+-   **Multi-Language Support**: Use Gemini's translation capabilities to provide insights in the user's native language.
+
+
+
 ## 🛠️ Prerequisites
 
 Before you begin, ensure you have the following installed on your local machine:
