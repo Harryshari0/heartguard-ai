@@ -2,6 +2,12 @@
 
 HeartGuard AI is a full-stack application that uses a combination of **Python Machine Learning** and **Google Gemini AI** to provide heart disease risk predictions and personalized health insights.
 
+🌐 Live Demo
+
+Try the live application here:
+
+👉 https://heartguard-ai-hpcf.onrender.com
+
 ## 🚀 Features
 - **Automated Model Selection**: Internally evaluates multiple machine learning models (**Logistic Regression**, **Random Forest**, **Decision Tree**) and automatically selects the best performer based on accuracy.
 - **AI Insights**: Generates personalized health advice using Google's Gemini 3 Flash model.
@@ -32,6 +38,55 @@ The system evaluates models based on the following metrics (derived from the UCI
 *The system currently selects **Logistic Regression** as the primary model due to its superior performance on this dataset.*
 
 ---
+📊 Dataset
+
+The model was trained using the UCI Heart Disease Dataset.
+
+Dataset Source
+https://archive.ics.uci.edu/ml/datasets/Heart+Disease
+
+Features Used
+
+Age
+
+Sex
+
+Chest Pain Type
+
+Resting Blood Pressure
+
+Cholesterol
+
+Fasting Blood Sugar
+
+Rest ECG
+
+Maximum Heart Rate
+
+Exercise Induced Angina
+
+ST Depression
+
+Slope
+
+Number of Major Vessels
+
+Thalassemia
+
+Target Variable
+
+Presence or absence of heart disease
+
+⚙️ Machine Learning Training Pipeline
+
+1️⃣ Load heart disease dataset
+2️⃣ Perform feature selection
+3️⃣ Split dataset into training and testing sets
+4️⃣ Apply StandardScaler for feature normalization
+5️⃣ Train Logistic Regression classifier
+6️⃣ Evaluate model performance
+7️⃣ Save model using Pickle (.pkl)
+8️⃣ Load trained model during runtime for predictions
 
 ## 🏗️ Engineering & Architecture
 
@@ -61,7 +116,44 @@ The backend provides a clean RESTful API for all operations:
 -   **User Authentication**: Secure user accounts to allow patients to track their health journey over long periods.
 -   **Multi-Language Support**: Use Gemini's translation capabilities to provide insights in the user's native language.
 
+🧰 Tech Stack
+Frontend
 
+React
+
+TypeScript
+
+Tailwind CSS
+
+Framer Motion
+
+Recharts
+
+Backend
+
+Node.js
+
+Express.js
+
+SQLite
+
+Machine Learning
+
+Python
+
+Scikit-learn
+
+Logistic Regression
+
+StandardScaler
+
+NumPy
+
+Pandas
+
+AI Integration
+
+Google Gemini API
 
 ## 🛠️ Prerequisites
 
@@ -99,9 +191,55 @@ The application requires a **Google Gemini API Key** to generate health insights
 
 ---
 
-## 🏃 Running the Application
+🔌 API Design
+Predict Risk
 
-To start the application in development mode:
+POST /api/predict
+
+Input
+Patient medical data
+
+Output
+
+risk probability
+
+risk level
+####----------------------------------------------
+## 🏃 Running the Application
+AI generated insight
+☁️ Deployment
+
+The application is deployed on Render Cloud Platform.
+
+Deployment Setup
+
+Frontend + Backend
+Render Web Service
+
+Machine Learning Engine
+Python script executed via Node.js child process
+
+Database
+SQLite stored within backend environment
+
+Live Application
+
+https://heartguard-ai-hpcf.onrender.com
+
+
+#####🚀 Future Improvements
+
+• Integration with wearable devices (Apple Health / Google Fit)
+
+• Advanced ML models
+XGBoost / LightGBM / Neural Networks
+
+• User authentication system
+
+• Multi-language health insights
+
+• Real-time heart rate monitoring
+####To start the application in development mode:
 
 ```bash
 npm run dev
