@@ -80,7 +80,7 @@ app.post("/api/predict", async (req, res) => {
   try {
     const patientData = req.body;
 
-    const pythonProcess = spawn("python", ["model.py"]);
+    const pythonProcess = spawn("python3", ["model.py"]);
 
     let resultData = "";
     let errorData = "";
