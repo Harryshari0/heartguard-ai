@@ -79,13 +79,16 @@ app.post("/api/history", (req, res) => {
 app.post("/api/predict", async (req, res) => {
   try {
     const patientData = req.body;
-    const pythonCommand = process.platform === "win32" ? "py" : "python3";
+    const pythonCommand =
+      process.platform === "win32" ? "py" : "python";
+
     const pythonProcess = spawn(pythonCommand, ["./model.py"], {
-      cwd: process.cwd()
-    });
-    pythonProcess.stderr.on("data", (data) => {
-      console.error("Python error:", data.toString());
-    });
+    cwd: process.cwd(),
+  });
+
+pythonProcess.stderr.on("data", (data) => {
+  console.error("Python error:", data.toString());
+});
 
     let resultData = "";
     let errorData = "";
