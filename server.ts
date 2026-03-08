@@ -80,7 +80,8 @@ app.post("/api/predict", async (req, res) => {
   try {
     const patientData = req.body;
 
-    const pythonProcess = spawn("python3", ["model.py"]);
+    const pythonCommand = process.platform === "win32" ? "py" : "python3";
+    const pythonProcess = spawn(pythonCommand, ["model.py"]);
 
     let resultData = "";
     let errorData = "";
