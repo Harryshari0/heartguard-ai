@@ -5,20 +5,20 @@ import math
 # Simple Logistic Regression weights for Heart Disease Prediction
 # These are rough approximations based on the UCI Heart Disease dataset
 WEIGHTS = {
-    'intercept': -10.0,
-    'age': 0.02,
-    'sex': 0.8,
-    'cp': 0.5,
-    'trestbps': 0.02,
-    'chol': 0.01,
-    'fbs': 0.4,
-    'restecg': 0.3,
-    'thalach': -0.05,
-    'exang': 0.9,
-    'oldpeak': 0.6,
-    'slope': 0.4,
-    'ca': 0.8,
-    'thal': 0.5,
+    'intercept': -5.0,
+    'age': 0.01,
+    'sex': 0.5,
+    'cp': 0.4,
+    'trestbps': 0.01,
+    'chol': 0.005,
+    'fbs': 0.3,
+    'restecg': 0.2,
+    'thalach': -0.02,
+    'exang': 0.6,
+    'oldpeak': 0.5,
+    'slope': 0.3,
+    'ca': 0.7,
+    'thal': 0.3,
 }
 
 # Simulated model performance metrics based on UCI Heart Disease dataset evaluation
@@ -67,10 +67,10 @@ def predict_decision_tree(data):
     # Simplified Decision Tree logic based on key features
     score = 0
     if data.get('ca', 0) > 0: score += 0.3
-    if data.get('cp', 0) == 0: score += 0.2 # Typical angina is often less risky than asymptomatic in UCI
-    if data.get('thalach', 0) < 140: score += 0.2
+    if data.get('cp', 1) == 1: score += 0.2 # Typical angina
+    if data.get('thalach', 150) < 140: score += 0.2
     if data.get('oldpeak', 0) > 2.0: score += 0.2
-    if data.get('exang') == 1: score += 0.1
+    if data.get('exang', 0) == 1: score += 0.1
     
     # Base risk + score
     return min(0.95, max(0.05, 0.1 + score))

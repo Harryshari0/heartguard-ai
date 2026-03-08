@@ -172,7 +172,7 @@ export default function App() {
       if (!response.ok) throw new Error("Failed to get prediction");
       const prediction = await response.json();
 
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+      const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
       const modelResponse = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
         contents: `As a medical AI assistant, analyze this heart disease risk prediction:
@@ -589,6 +589,30 @@ export default function App() {
                             onChange={handleInputChange}
                             className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-rose-500 outline-none transition-all font-bold text-lg"
                           />
+                        </div>
+
+                        <div className="space-y-3">
+                          <label className="text-sm font-bold text-slate-700 uppercase tracking-wider">Exercise Induced Angina?</label>
+                          <div className="flex gap-4">
+                            {[
+                              { label: "Yes", value: 1 },
+                              { label: "No", value: 0 }
+                            ].map(opt => (
+                              <button
+                                key={opt.value}
+                                type="button"
+                                onClick={() => handleValueChange("exang", opt.value)}
+                                className={cn(
+                                  "flex-1 py-4 rounded-2xl border transition-all font-bold flex items-center justify-center gap-3",
+                                  formData.exang === opt.value 
+                                    ? "bg-indigo-600 text-white border-indigo-600 shadow-lg shadow-indigo-100" 
+                                    : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300"
+                                )}
+                              >
+                                {opt.label}
+                              </button>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
