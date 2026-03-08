@@ -37,9 +37,9 @@ def predict_heart_risk(data):
     probability = model.predict_proba(X_scaled)[0][1]
 
     risk = "Low"
-    if probability > 0.7:
+    if probability >= 0.55:
         risk = "High"
-    elif probability > 0.4:
+    elif probability >= 0.30:
         risk = "Medium"
 
     return {
