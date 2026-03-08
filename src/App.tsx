@@ -172,23 +172,38 @@ export default function App() {
       if (!response.ok) throw new Error("Failed to get prediction");
       const prediction = await response.json();
 
-      const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
-      const modelResponse = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: `As a medical AI assistant, analyze this heart disease risk prediction:
-        Patient Data: ${JSON.stringify(formData)}
-        Predicted Probability: ${(prediction.probability * 100).toFixed(2)}%
-        Risk Level: ${prediction.riskLevel}
+      let insight = "Consult a cardiologist for a professional medical evaluation.";
 
-        Provide a brief, professional health insight (2-3 sentences) explaining the main risk factors for this specific patient and suggesting general preventive measures. Start with "Insight:".`,
-      });
+try {
 
-      const insight = modelResponse.text?.replace("Insight:", "").trim() || "Consult a cardiologist for a professional medical evaluation.";
+  const ai = new GoogleGenAI({
+    apiKey: import.meta.env.VITE_GEMINI_API_KEY
+  });
 
-      const finalResult = {
-        ...prediction,
-        insight
-      };
+  const modelResponse = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents: `As a medical AI assistant, analyze this heart disease risk prediction:
+Patient Data: ${JSON.stringify(formData)}
+Predicted Probability: ${(prediction.probability * 100).toFixed(2)}%
+Risk Level: ${prediction.riskLevel}
+
+Provide a brief professional health insight (2–3 sentences).`
+  });
+
+  insight =
+    modelResponse.text?.replace("Insight:", "").trim() ||
+    insight;
+
+} catch (geminiError) {
+
+  console.error("Gemini insight generation failed:", geminiError);
+
+}
+
+const finalResult = {
+  ...prediction,
+  insight
+};
       
       setResult(finalResult);
       saveToHistory(finalResult);
