@@ -76,63 +76,66 @@ app.post("/api/history", (req, res) => {
 });
 
 /* ---------------- PREDICTION API ---------------- */
+
 app.post("/api/predict", async (req, res) => {
   try {
     const patientData = req.body;
-    const pythonCommand =
-      process.platform === "win32" ? "py" : "python";
 
-    const pythonProcess = spawn(pythonCommand, ["./model.py"], {
-    cwd: process.cwd(),
-  });
+    // Use python3 for Linux (Render) and py for Windows
+    const pythonCommand = process.platform === "win32" ? "py" : "python3";
 
-pythonProcess.stderr.on("data", (data) => {
-  console.error("Python error:", data.toString());
-});
+    const pythonProcess = spawn(pythonCommand, ["model.py"], {
+      cwd: process.cwd(),
+    });
 
     let resultData = "";
     let errorData = "";
 
+    // Send patient data to Python
     pythonProcess.stdin.write(JSON.stringify(patientData));
     pythonProcess.stdin.end();
 
+    // Capture Python output
     pythonProcess.stdout.on("data", (data) => {
       resultData += data.toString();
+      console.log("Python output:", data.toString());
     });
 
+    // Capture Python errors
     pythonProcess.stderr.on("data", (data) => {
       errorData += data.toString();
+      console.error("Python error:", data.toString());
     });
 
     pythonProcess.on("close", (code) => {
-
       if (code !== 0) {
-        console.error("Python error:", errorData);
-        return res.status(500).json({ error: "Failed to process prediction in Python" });
+        console.error("Python process exited with code:", code);
+        console.error(errorData);
+        return res.status(500).json({
+          error: "Python model execution failed",
+        });
       }
 
       try {
         const prediction = JSON.parse(resultData);
-
-        if (prediction.error) {
-          return res.status(500).json({ error: prediction.error });
-        }
-
         res.json(prediction);
+      } catch (err) {
+        console.error("JSON parse error:", err);
+        console.error("Raw Python output:", resultData);
 
-      } catch (e) {
-        console.error("JSON parse error from Python:", e);
-        res.status(500).json({ error: "Invalid response from Python model" });
+        res.status(500).json({
+          error: "Invalid response from Python model",
+        });
       }
-
     });
 
   } catch (error) {
     console.error("Prediction error:", error);
-    res.status(500).json({ error: "Failed to process prediction" });
+    res.status(500).json({
+      error: "Server failed to process prediction",
+    });
   }
 });
-
 /* ---------------- SERVER SETUP ---------------- */
 async function setupServer() {
 
